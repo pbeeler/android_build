@@ -1510,7 +1510,11 @@ $(INTERNAL_FINDBUGS_HTML_TARGET): $(INTERNAL_FINDBUGS_XML_TARGET)
 # These are some additional build tasks that need to be run.
 include $(sort $(wildcard $(BUILD_SYSTEM)/tasks/*.mk))
 -include $(sort $(wildcard vendor/*/build/tasks/*.mk))
+<<<<<<< HEAD
+-include $(sort $(wildcard device/*/build/tasks/*.mk))
+=======
 include $(sort $(wildcard device/*/common/tasks/*.mk))
+>>>>>>> 1a77933... build/core: Forward-port hook for device specific tasks
 
 # -----------------------------------------------------------------
 # Create SDK repository packages. Must be done after tasks/* since
