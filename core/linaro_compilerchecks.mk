@@ -8,8 +8,8 @@
 # and we don't need to be aware of all the details the kernel checks for.
 #
 # Usage examples:
-#      echo "GCC version $(cc-version)" [e.g. 46 for 4.6]
-#      echo $(call cc-ifversion, -lt, 46, GCC older than 4.6)
+#      echo "GCC version $(cc-version)" [e.g. 47 for 4.7]
+#      echo $(call cc-ifversion, -lt, 46, GCC older than 4.7)
 #      # Use -mcpu=cortex-a9 if supported, otherwise -mcpu=cortex-a8
 #      echo $(call cc-option, -mcpu=cortex-a9, -mcpu=cortex-a8)
 #      # Use -mcpu=cortex-a9 if supported, otherwise -mcpu=cortex-a8
@@ -22,7 +22,8 @@
 # friends in the same file that sets TARGET_CC...
 
 ifeq ($(strip $(TARGET_TOOLS_PREFIX)),)
-LINARO_COMPILERCHECK_CC := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-4.6/bin/arm-linux-androideabi-gcc$(HOST_EXECUTABLE_SUFFIX)
+  LINARO_COMPILERCHECK_ROOT := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-4.7
+LINARO_COMPILERCHECK_CC := $(LINARO_COMPILERCHECK_ROOT)/bin/arm-linux-androideabi-gcc$(HOST_EXECUTABLE_SUFFIX)
 else
 LINARO_COMPILERCHECK_CC := $(TARGET_TOOLS_PREFIX)gcc$(HOST_EXECUTABLE_SUFFIX)
 endif
