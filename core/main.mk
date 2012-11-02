@@ -136,16 +136,16 @@ $(warning ************************************************************)
 endif
 ifeq ($(strip $(java_version)),)
 $(info ************************************************************)
-$(info You are attempting to build with the incorrect version)
-$(info of java.)
+$(info You are attempting to build with the unsupported version of java.)
 $(info $(space))
 $(info Your version is: $(shell java -version 2>&1 | head -n 1).)
-$(info The correct version is: Java SE 1.6.)
+$(info The AOSP supported version is: Java SE 1.6.)
 $(info $(space))
-$(info Please follow the machine setup instructions at)
+$(info Linaro builds with java version "1.7.0_09" seems to work fine though.)
+$(info AOSP supported machine setup instructions are at)
 $(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
 $(info ************************************************************)
-$(error stop)
+#$(error stop)
 endif
 
 # Check for the correct version of javac
