@@ -1,0 +1,18 @@
+#!/bin/bash
+# Build Script.  Use bash to run this script, bash grouper-kernel from source directory
+# Exports
+export DIRSRC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+export KERNELSRC=$DIRSRC/kernel/asus/grouper;
+export ARM_EABI_TOOLCHAIN=$DIRSRC/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7;
+export PATH=$PATH:$ARM_EABI_TOOLCHAIN/bin:$ARM_EABI_TOOLCHAIN/arm-eabi/bin;
+export ARCH=arm;
+export CCOMPILE=$CROSS_COMPILE;
+export CROSS_COMPILE=$ARM_EABI_TOOLCHAIN/bin/arm-eabi-;
+echo "Starting the kernel build";
+echo "";
+make -C $KERNELSRC -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@" teamandroid_aosp_grouper_defconfig && time make -C $KERNELSRC -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@" zImage &&
+make -C $KERNELSRC -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@" modules;
+cp $KERNELSRC/arch/arm/boot/zImage -f $DIRSRC/device/asus/grouper/kernel && cp $KERNELSRC/drivers/staging/zram/zram.ko -f $DIRSRC/device/asus/grouper/system/lib/modules/zram.ko;
+echo "Kernel build finished, Continuing with ROM build";
+echo "";
+
