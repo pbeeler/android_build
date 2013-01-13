@@ -1,0 +1,41 @@
+#!/bin/bash
+# Build Script.  Use bash to run this script, bash grouper-ota from source directory
+# export's
+export DEVICE=grouper;
+export BUILD=SaberMod;
+# Find out where the source directory is
+export DIRSRC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+export KERNEL=grouper;
+# Output directory
+export OUT_DIR_COMMON_BASE=$DIRSRC/out/$DEVICE
+# Disable c++11 mode
+export DEBUG_NO_STDCXX11=yes;
+# ccache. Set up ccache to your liking prior to running this script
+export CCACHE_DIR=$DIRSRC/prebuilts/misc/linux-x86/ccache;
+export USE_CCACHE=1;
+if [ -e $DIRSRC/$KERNEL-kernel ];
+then
+    echo "Building kernel before ROM";
+    echo "";
+    bash $DIRSRC/$KERNEL-kernel;
+else
+    echo "No kernel script found, ignoring and treating as normal";
+    echo "";
+fi;
+# clean Steps
+if [ -d $DIRSRC/out/$DEVICE/$BUILD ];
+then
+    echo "Cleaning the output directory"
+    echo ""
+    rm -rf $DIRSRC/out/$DEVICE/$BUILD/target/product/$DEVICE/*.img $DIRSRC/out/$DEVICE/$BUILD/target/product/$DEVICE/*.zip $DIRSRC/out/$DEVICE/$BUILD/target/product/$DEVICE/system/build.prop $DIRSRC/out/$DEVICE/$BUILD/target/product/$DEVICE/*.md5sum $DIRSRC/out/$DEVICE/$BUILD/target/product/$DEVICE/kernel
+fi;
+# Start the build
+echo "Starting the build";
+echo "";
+# Build with number of cpu's available and nothing more or less :)
+. build/envsetup.sh && lunch full_$DEVICE-userdebug && time make -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@" otapackage;
+# Build is complete, (hopefully without errors)
+cd $DIRSRC/device/asus/grouper && git reset --hard && cd $DIRSRC;
+echo "Finished!";
+echo "";
+
