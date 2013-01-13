@@ -66,22 +66,38 @@ endif
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-TARGET_arm_CFLAGS :=    -O2 \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing    \
-                        -funswitch-loops
+ifeq ($(USE_MORE_OPT_FLAGS),yes)
+    TARGET_arm_CFLAGS :=    -O3 \
+                            -fomit-frame-pointer \
+                            -fstrict-aliasing    \
+                            -funswitch-loops
+else
+    TARGET_arm_CFLAGS :=    -O2 \
+                            -fomit-frame-pointer \
+                            -fstrict-aliasing    \
+                            -funswitch-loops
+endif
 
 # Modules can choose to compile some source as thumb. As
 # non-thumb enabled targets are supported, this is treated
 # as a 'hint'. If thumb is not enabled, these files are just
 # compiled as ARM.
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
-TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing \
-                        -Wstrict-aliasing=2 \
-                        -Werror=strict-aliasing
+    ifeq ($(USE_MORE_OPT_FLAGS),yes)
+        TARGET_thumb_CFLAGS :=  -mthumb \
+                                -O3 \
+                                -fomit-frame-pointer \
+                                -fstrict-aliasing \
+                                -Wstrict-aliasing=2 \
+                                -Werror=strict-aliasing
+    else
+        TARGET_thumb_CFLAGS :=  -mthumb \
+                                -Os \
+                                -fomit-frame-pointer \
+                                -fstrict-aliasing \
+                                -Wstrict-aliasing=2 \
+                                -Werror=strict-aliasing
+    endif
 else
 TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
 endif
