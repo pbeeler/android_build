@@ -10,6 +10,8 @@ export KERNEL=grouper;
 export OUT_DIR_COMMON_BASE=$DIRSRC/out/$DEVICE
 # Disable c++11 mode
 export DEBUG_NO_STDCXX11=yes;
+# Build with more opt flags
+export USE_MORE_OPT_FLAGS=yes;
 # ccache. Set up ccache to your liking prior to running this script
 export CCACHE_DIR=$DIRSRC/prebuilts/misc/linux-x86/ccache;
 export USE_CCACHE=1;
